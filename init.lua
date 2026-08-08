@@ -99,7 +99,7 @@ do
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -390,10 +390,21 @@ do
     },
   }
 
+  vim.pack.add { gh 'rebelot/kanagawa.nvim' }
+  ---@diagnostic disable-next-line: missing-fields
+  require('kanagawa').setup {
+    styles = {
+      comments = { italic = false }, -- Disable italics in comments
+      theme = 'dragon',
+    },
+  }
+
+  vim.pack.add { gh 'EdenEast/nightfox.nvim' }
+
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'tokyonight-night'
+  vim.cmd.colorscheme 'carbonfox'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
@@ -692,10 +703,31 @@ do
   --  See `:help lsp-config` for information about keys and how to configure
   ---@type table<string, vim.lsp.Config>
   local servers = {
-    -- clangd = {},
+    clangd = {},
     -- gopls = {},
-    -- pyright = {},
-    -- rust_analyzer = {},
+    pyright = {
+      settings = {
+        pyright = {
+          -- Using Ruff's import organizer
+          disableOrganizeImports = true,
+        },
+        python = {
+          analysis = {
+            -- Ignore all files for analysis to exclusively use Ruff for linting
+            ignore = { '*' },
+          },
+        },
+      },
+    },
+    ruff = {
+      init_options = {
+        settings = {
+          logLevel = 'info',
+        },
+      },
+    },
+    prettier = {},
+    rust_analyzer = {},
     --
     -- Some languages (like typescript) have entire language plugins that can be useful:
     --    https://github.com/pmizio/typescript-tools.nvim
@@ -768,6 +800,20 @@ do
     vim.lsp.config(name, server)
     vim.lsp.enable(name)
   end
+
+  -- Resolve some ruff/pyright conflicts.
+  vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+    callback = function(args)
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client == nil then return end
+      if client.name == 'ruff' then
+        -- Disable hover in favor of Pyright
+        client.server_capabilities.hoverProvider = false
+      end
+    end,
+    desc = 'LSP: Disable hover capability from Ruff',
+  })
 end
 
 -- ============================================================
@@ -824,8 +870,8 @@ do
   --    See the README about individual language/framework/plugin snippets:
   --    https://github.com/rafamadriz/friendly-snippets
   --
-  -- vim.pack.add { gh 'rafamadriz/friendly-snippets' }
-  -- require('luasnip.loaders.from_vscode').lazy_load()
+  vim.pack.add { gh 'rafamadriz/friendly-snippets' }
+  require('luasnip.loaders.from_vscode').lazy_load()
 
   -- [[ Autocomplete Engine ]]
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
@@ -966,11 +1012,11 @@ do
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug'
+  require 'kickstart.plugins.debug'
   -- require 'kickstart.plugins.indent_line'
   -- require 'kickstart.plugins.lint'
   -- require 'kickstart.plugins.autopairs'
-  -- require 'kickstart.plugins.neo-tree'
+  require 'kickstart.plugins.neo-tree'
   -- require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
