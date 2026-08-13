@@ -243,6 +243,12 @@ do
   -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
   -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
+  -- Keybind to auto-open terminal
+  vim.keymap.set('n', '<C-t>', function()
+    vim.cmd 'botright 15split'
+    vim.cmd 'terminal'
+    vim.cmd 'startinsert'
+  end, { desc = 'Open a terminal at bottom' })
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
 
