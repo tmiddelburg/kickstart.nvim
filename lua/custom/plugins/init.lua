@@ -21,3 +21,9 @@ do
   vim.pack.add { gh 'numToStr/Comment.nvim' }
   require('Comment').setup()
 end
+
+-- Git fugitive
+do
+  vim.pack.add { gh 'tpope/vim-fugitive' }
+  -- require('fugitive').setup()
+end
