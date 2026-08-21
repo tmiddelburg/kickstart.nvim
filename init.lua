@@ -399,21 +399,13 @@ do
     },
   }
 
-  vim.pack.add { gh 'rebelot/kanagawa.nvim' }
-  ---@diagnostic disable-next-line: missing-fields
-  require('kanagawa').setup {
-    styles = {
-      comments = { italic = false }, -- Disable italics in comments
-      theme = 'dragon',
-    },
-  }
-
-  vim.pack.add { gh 'EdenEast/nightfox.nvim' }
+  vim.pack.add { gh 'morhetz/gruvbox' }
 
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'carbonfox'
+  vim.g.gruvbox_contrast_dark = "hard"
+  vim.cmd.colorscheme 'gruvbox'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
