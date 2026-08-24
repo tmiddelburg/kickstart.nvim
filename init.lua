@@ -706,9 +706,9 @@ do
   local servers = {
     clangd = {},
     -- gopls = {},
-    basedpyright = {
+    pyright = {
       settings = {
-        basedpyright = {
+        pyright = {
           -- Using Ruff's import organizer
           disableOrganizeImports = true,
         },
