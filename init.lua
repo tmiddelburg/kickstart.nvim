@@ -404,7 +404,7 @@ do
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.g.gruvbox_contrast_dark = "hard"
+  vim.g.gruvbox_contrast_dark = 'hard'
   vim.cmd.colorscheme 'gruvbox'
 
   -- Highlight todo, notes, etc in comments
@@ -839,7 +839,9 @@ do
     formatters_by_ft = {
       -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
-      python = { "ruff_fix", "ruff_format" },
+      python = { 'ruff_fix', 'ruff_format' },
+      markdown = { 'mdformat' },
+      toml = { 'taplo' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
